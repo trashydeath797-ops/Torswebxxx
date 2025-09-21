@@ -1,100 +1,81 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monetag 3 Ad Demo</title>
-
-<!-- SDK একদম head এর নিচে -->
-<script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
-
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    height:100vh;
-    margin:0;
-  }
-  .box{
-    background: rgba(255,255,255,0.1);
-    padding:25px 30px;
-    border-radius:16px;
-    text-align:center;
-    box-shadow:0 8px 20px rgba(0,0,0,0.3);
-    backdrop-filter: blur(8px);
-    width:90%;
-    max-width:400px;
-  }
-  button{
-    margin:8px 0;
-    padding:12px 20px;
-    border:none;
-    border-radius:25px;
-    font-size:16px;
-    font-weight:bold;
-    cursor:pointer;
-    background:#ff7eb3;
-    color:#fff;
-    width:100%;
-    transition:.3s;
-  }
-  button:hover{
-    background:#ff4f9a;
-    transform:scale(1.05);
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monetag Mini App Ads</title>
+  <!-- SDK Load -->
+  <script src="//libtl.com/sdk.js" data-zone="9911742" data-sdk="show_9911742"></script>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #sdkStatus { margin-top: 20px; font-weight: bold; }
+  </style>
 </head>
 <body>
+  <h1>Monetag Ads Demo</h1>
+  
+  <!-- Buttons for user-triggered ads -->
+  <button id="btnRewardedInterstitial">Watch Rewarded Interstitial</button>
+  <button id="btnRewardedPopup">Watch Rewarded Popup</button>
 
-<div class="box">
-  <h1>🔥 Monetag 3 Ad Demo</h1>
-  <p>Button দিয়ে দেখানো যায়:</p>
-  <button onclick="showRewardedPopup()">Rewarded Popup</button>
-  <button onclick="showRewardedInterstitial()">Rewarded Interstitial</button>
-</div>
+  <div id="sdkStatus">SDK Status: Loading...</div>
 
-<script>
-  // 1️⃣ In-App Interstitial (auto, button ছাড়া)
-  document.addEventListener("DOMContentLoaded", function(){
-    if(typeof show_9911742==="function"){
-      // session/mid-use trigger
-      setInterval(()=>{
+  <script>
+    // SDK Status Check
+    function checkSDK() {
+      if (typeof show_9911742 !== 'undefined') {
+        document.getElementById('sdkStatus').innerText = 'SDK Status: Loaded ✅';
+      } else {
+        document.getElementById('sdkStatus').innerText = 'SDK Status: Not Loaded ❌';
+      }
+    }
+    // Check after small delay to allow SDK load
+    setTimeout(checkSDK, 1000);
+
+    // Rewarded Interstitial
+    document.getElementById('btnRewardedInterstitial').addEventListener('click', () => {
+      if(typeof show_9911742 !== 'undefined'){
+        show_9911742().then(() => {
+          alert('You have seen a Rewarded Interstitial Ad!');
+          // TODO: Add your reward logic here
+        }).catch(e => console.log('Ad failed:', e));
+      }
+    });
+
+    // Rewarded Popup
+    document.getElementById('btnRewardedPopup').addEventListener('click', () => {
+      if(typeof show_9911742 !== 'undefined'){
+        show_9911742('pop').then(() => {
+          alert('You have seen a Rewarded Popup Ad!');
+          // TODO: Add your reward logic here
+        }).catch(e => {
+          console.log('Popup ad failed or closed:', e);
+        });
+      }
+    });
+
+    // Auto In-App Interstitial (high frequency)
+    function autoInterstitial() {
+      if(typeof show_9911742 !== 'undefined'){
         show_9911742({
-          type:'inApp',
-          inAppSettings:{
-            frequency:1,    // ১ বার দেখাবে
-            capping:0.1,    // ৬ মিনিটে max ১ বার
-            interval:120,   // ২ মিনিট পর আবার চেষ্টা
-            timeout:3,      // ৩ সেকেন্ড delay
-            everyPage:false
+          type: 'inApp',
+          inAppSettings: {
+            frequency: 2,  // 2 ads automatically
+            capping: 0.1,  // within 6 minutes
+            interval: 30,  // 30s gap
+            timeout: 5,    // 5s delay
+            everyPage: false
           }
         });
-      }, 300000); // প্রতি ৫ মিনিটে check করে show করার চেষ্টা
+      }
     }
-  });
 
-  // 2️⃣ Rewarded Popup
-  function showRewardedPopup(){
-    if(typeof show_9911742==="function"){
-      show_9911742('pop')
-        .then(()=>{alert("✅ ইউজার পপআপ দেখেছে, reward দিতে পারো!");})
-        .catch(()=>{alert("⚠️ পপআপ দেখাতে সমস্যা।");});
-    } else alert("SDK প্রস্তুত নয়।");
-  }
+    // Call autoInterstitial every 1 min (adjust if needed)
+    setInterval(autoInterstitial, 60000);
 
-  // 3️⃣ Rewarded Interstitial
-  function showRewardedInterstitial(){
-    if(typeof show_9911742==="function"){
-      show_9911742()
-        .then(()=>{alert("✅ ইউজার ইন্টারস্টিশিয়াল দেখেছে, reward দিতে পারো!");})
-        .catch(()=>{alert("⚠️ ইন্টারস্টিশিয়াল দেখাতে সমস্যা।");});
-    } else alert("SDK প্রস্তুত নয়।");
-  }
-</script>
+    // Initial autoInterstitial on page load
+    window.addEventListener('load', autoInterstitial);
+  </script>
 </body>
-  </html>
+</html>
