@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monetag MiniApp</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      backdrop-filter: blur(8px);
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    p {
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+    button {
+      background: #ff7eb3;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff4f9a;
+      transform: scale(1.05);
+    }
+  </style>
+
+  <!-- Monetag SDK -->
+  <script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
+</head>
+<body>
+  <div class="card">
+    <h1>🔥 Monetag MiniApp</h1>
+    <p>Click below to manually trigger an Interstitial Ad</p>
+    <button onclick="triggerAd()">Show Interstitial Ad</button>
+  </div>
+
+  <script>
+    // In-App Interstitial (auto logic)
+    show_9911742({
+      type: 'inApp',
+      inAppSettings: {
+        frequency: 2,
+        capping: 0.1,
+        interval: 30,
+        timeout: 5,
+        everyPage: false
+      }
+    });
+
+    // Manual button trigger
+    function triggerAd() {
+      if (typeof show_9911742 === "function") {
+        show_9911742({
+          type: 'inApp',
+          inAppSettings: {
+            frequency: 1,
+            capping: 0.1,
+            interval: 5,
+            timeout: 1,
+            everyPage: false
+          }
+        });
+      } else {
+        alert("Ad not loaded yet, please try again.");
+      }
+    }
+  </script>
+</body>
+  </html>
