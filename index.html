@@ -3,46 +3,40 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monetag MiniApp</title>
+  <title>Monetag Interstitial Demo</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
       color: #fff;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
       height: 100vh;
       margin: 0;
     }
-    .card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 25px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    .box {
+      background: rgba(255,255,255,0.1);
+      padding: 20px 30px;
+      border-radius: 16px;
       text-align: center;
-      width: 90%;
-      max-width: 400px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       backdrop-filter: blur(8px);
     }
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-    p {
-      margin-bottom: 20px;
-      font-size: 1rem;
+      margin-bottom: 10px;
     }
     button {
-      background: #ff7eb3;
+      margin-top: 15px;
+      padding: 10px 20px;
       border: none;
-      padding: 12px 20px;
-      border-radius: 30px;
-      font-size: 1rem;
+      border-radius: 25px;
+      font-size: 16px;
       font-weight: bold;
-      color: #fff;
       cursor: pointer;
+      background: #ff7eb3;
+      color: #fff;
       transition: 0.3s;
     }
     button:hover {
@@ -51,30 +45,34 @@
     }
   </style>
 
-  <!-- Monetag SDK -->
+  <!-- SDK load -->
   <script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
 </head>
 <body>
-  <div class="card">
-    <h1>🔥 Monetag MiniApp</h1>
-    <p>Click below to manually trigger an Interstitial Ad</p>
-    <button onclick="triggerAd()">Show Interstitial Ad</button>
+  <div class="box">
+    <h1>🔥 Monetag Interstitial</h1>
+    <p>Ad will auto-load, or click button to trigger</p>
+    <button onclick="triggerAd()">Show Ad Now</button>
   </div>
 
   <script>
-    // In-App Interstitial (auto logic)
-    show_9911742({
-      type: 'inApp',
-      inAppSettings: {
-        frequency: 2,
-        capping: 0.1,
-        interval: 30,
-        timeout: 5,
-        everyPage: false
+    // Auto In-App Interstitial activation
+    document.addEventListener("DOMContentLoaded", function() {
+      if (typeof show_9911742 === "function") {
+        show_9911742({
+          type: 'inApp',
+          inAppSettings: {
+            frequency: 2,
+            capping: 0.1,
+            interval: 30,
+            timeout: 5,
+            everyPage: false
+          }
+        });
       }
     });
 
-    // Manual button trigger
+    // Manual trigger by button
     function triggerAd() {
       if (typeof show_9911742 === "function") {
         show_9911742({
@@ -88,9 +86,9 @@
           }
         });
       } else {
-        alert("Ad not loaded yet, please try again.");
+        alert("Ad not loaded yet, try again.");
       }
     }
   </script>
 </body>
-  </html>
+</html>
