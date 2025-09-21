@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Monetag Interstitial Demo</title>
+  <title>Monetag Ad Demo</title>
+
+  <!-- SDK -->
+  <script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
       display: flex;
       align-items: center;
@@ -18,18 +22,20 @@
     }
     .box {
       background: rgba(255,255,255,0.1);
-      padding: 20px 30px;
+      padding: 25px 30px;
       border-radius: 16px;
       text-align: center;
       box-shadow: 0 8px 20px rgba(0,0,0,0.3);
       backdrop-filter: blur(8px);
+      width: 90%;
+      max-width: 400px;
     }
     h1 {
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     button {
-      margin-top: 15px;
-      padding: 10px 20px;
+      margin: 8px 0;
+      padding: 12px 20px;
       border: none;
       border-radius: 25px;
       font-size: 16px;
@@ -37,6 +43,7 @@
       cursor: pointer;
       background: #ff7eb3;
       color: #fff;
+      width: 100%;
       transition: 0.3s;
     }
     button:hover {
@@ -44,20 +51,19 @@
       transform: scale(1.05);
     }
   </style>
-
-  <!-- SDK load -->
-  <script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
 </head>
 <body>
   <div class="box">
-    <h1>🔥 Monetag Interstitial</h1>
-    <p>Ad will auto-load, or click button to trigger</p>
-    <button onclick="triggerAd()">Show Ad Now</button>
+    <h1>🔥 Monetag Ads Demo</h1>
+    <p>Select any ad type to test:</p>
+    <button onclick="showInApp()">Show In-App Interstitial</button>
+    <button onclick="showRewardedPopup()">Show Rewarded Popup</button>
+    <button onclick="showRewardedInterstitial()">Show Rewarded Interstitial</button>
   </div>
 
   <script>
-    // Auto In-App Interstitial activation
-    document.addEventListener("DOMContentLoaded", function() {
+    // In-App Interstitial
+    function showInApp() {
       if (typeof show_9911742 === "function") {
         show_9911742({
           type: 'inApp',
@@ -69,24 +75,38 @@
             everyPage: false
           }
         });
-      }
-    });
-
-    // Manual trigger by button
-    function triggerAd() {
-      if (typeof show_9911742 === "function") {
-        show_9911742({
-          type: 'inApp',
-          inAppSettings: {
-            frequency: 1,
-            capping: 0.1,
-            interval: 5,
-            timeout: 1,
-            everyPage: false
-          }
-        });
       } else {
-        alert("Ad not loaded yet, try again.");
+        alert("SDK not ready.");
+      }
+    }
+
+    // Rewarded Popup
+    function showRewardedPopup() {
+      if (typeof show_9911742 === "function") {
+        show_9911742('pop')
+          .then(() => {
+            alert("✅ User watched popup ad. Reward granted!");
+          })
+          .catch(e => {
+            alert("⚠️ Error showing popup ad.");
+          });
+      } else {
+        alert("SDK not ready.");
+      }
+    }
+
+    // Rewarded Interstitial
+    function showRewardedInterstitial() {
+      if (typeof show_9911742 === "function") {
+        show_9911742()
+          .then(() => {
+            alert("✅ You have seen an interstitial ad! Reward granted!");
+          })
+          .catch(e => {
+            alert("⚠️ Error showing interstitial ad.");
+          });
+      } else {
+        alert("SDK not ready.");
       }
     }
   </script>
