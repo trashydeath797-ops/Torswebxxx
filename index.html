@@ -1,18 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Monetag Ad Demo</title>
-
-  <!-- SDK -->
-  <script src='//libtl.com/sdk.js' data-zone='9911742' data-sdk='show_9911742'></script>
-
+  <script src="https://libtl.com/sdk.js" data-zone="9911742" data-sdk="show_9911742"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -21,29 +18,26 @@
       margin: 0;
     }
     .box {
-      background: rgba(255,255,255,0.1);
-      padding: 25px 30px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
       border-radius: 16px;
       text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(8px);
-      width: 90%;
-      max-width: 400px;
     }
     h1 {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     button {
-      margin: 8px 0;
-      padding: 12px 20px;
+      margin-top: 15px;
+      padding: 10px 20px;
       border: none;
       border-radius: 25px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
       background: #ff7eb3;
-      color: #fff;
-      width: 100%;
+      color: white;
       transition: 0.3s;
     }
     button:hover {
@@ -54,11 +48,11 @@
 </head>
 <body>
   <div class="box">
-    <h1>🔥 Monetag Ads Demo</h1>
-    <p>Select any ad type to test:</p>
-    <button onclick="showInApp()">Show In-App Interstitial</button>
-    <button onclick="showRewardedPopup()">Show Rewarded Popup</button>
-    <button onclick="showRewardedInterstitial()">Show Rewarded Interstitial</button>
+    <h1>🔥 Monetag Ad Demo</h1>
+    <p>নিচের বোতামগুলির মাধ্যমে বিজ্ঞাপন দেখুন:</p>
+    <button onclick="showInApp()">In-App Interstitial</button>
+    <button onclick="showRewardedPopup()">Rewarded Popup</button>
+    <button onclick="showRewardedInterstitial()">Rewarded Interstitial</button>
   </div>
 
   <script>
@@ -76,7 +70,7 @@
           }
         });
       } else {
-        alert("SDK not ready.");
+        alert("SDK প্রস্তুত নয়।");
       }
     }
 
@@ -85,13 +79,13 @@
       if (typeof show_9911742 === "function") {
         show_9911742('pop')
           .then(() => {
-            alert("✅ User watched popup ad. Reward granted!");
+            alert("✅ ইউজার পপআপ বিজ্ঞাপন দেখেছেন। রিওয়ার্ড প্রদান করুন!");
           })
-          .catch(e => {
-            alert("⚠️ Error showing popup ad.");
+          .catch(() => {
+            alert("⚠️ পপআপ বিজ্ঞাপন দেখাতে সমস্যা হয়েছে।");
           });
       } else {
-        alert("SDK not ready.");
+        alert("SDK প্রস্তুত নয়।");
       }
     }
 
@@ -100,13 +94,13 @@
       if (typeof show_9911742 === "function") {
         show_9911742()
           .then(() => {
-            alert("✅ You have seen an interstitial ad! Reward granted!");
+            alert("✅ ইউজার ইন্টারস্টিশিয়াল বিজ্ঞাপন দেখেছেন। রিওয়ার্ড প্রদান করুন!");
           })
-          .catch(e => {
-            alert("⚠️ Error showing interstitial ad.");
+          .catch(() => {
+            alert("⚠️ ইন্টারস্টিশিয়াল বিজ্ঞাপন দেখাতে সমস্যা হয়েছে।");
           });
       } else {
-        alert("SDK not ready.");
+        alert("SDK প্রস্তুত নয়।");
       }
     }
   </script>
