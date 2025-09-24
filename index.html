@@ -3,79 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monetag Mini App Ads</title>
-  <!-- SDK Load -->
+  <title>Monetag Ads Demo</title>
+
+  <!-- SDK -->
   <script src="//libtl.com/sdk.js" data-zone="9911742" data-sdk="show_9911742"></script>
+
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-    button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #sdkStatus { margin-top: 20px; font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 12px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
   </style>
 </head>
 <body>
-  <h1>Monetag Ads Demo</h1>
-  
-  <!-- Buttons for user-triggered ads -->
-  <button id="btnRewardedInterstitial">Watch Rewarded Interstitial</button>
-  <button id="btnRewardedPopup">Watch Rewarded Popup</button>
 
-  <div id="sdkStatus">SDK Status: Loading...</div>
+  <h1>🎯 Monetag Ads Demo</h1>
+
+  <button onclick="showRewardedPopup()">🎁 Rewarded Popup</button>
+  <button onclick="showRewardedInterstitial()">🎬 Rewarded Interstitial</button>
+  <button onclick="showInAppInterstitial()">📲 In-App Interstitial</button>
 
   <script>
-    // SDK Status Check
-    function checkSDK() {
-      if (typeof show_9911742 !== 'undefined') {
-        document.getElementById('sdkStatus').innerText = 'SDK Status: Loaded ✅';
-      } else {
-        document.getElementById('sdkStatus').innerText = 'SDK Status: Not Loaded ❌';
-      }
+    // Rewarded Popup
+    function showRewardedPopup() {
+      show_9911742({ type: 'rewarded' });
     }
-    // Check after small delay to allow SDK load
-    setTimeout(checkSDK, 1000);
 
     // Rewarded Interstitial
-    document.getElementById('btnRewardedInterstitial').addEventListener('click', () => {
-      if(typeof show_9911742 !== 'undefined'){
-        show_9911742().then(() => {
-          alert('You have seen a Rewarded Interstitial Ad!');
-          // TODO: Add your reward logic here
-        }).catch(e => console.log('Ad failed:', e));
-      }
-    });
-
-    // Rewarded Popup
-    document.getElementById('btnRewardedPopup').addEventListener('click', () => {
-      if(typeof show_9911742 !== 'undefined'){
-        show_9911742('pop').then(() => {
-          alert('You have seen a Rewarded Popup Ad!');
-          // TODO: Add your reward logic here
-        }).catch(e => {
-          console.log('Popup ad failed or closed:', e);
-        });
-      }
-    });
-
-    // Auto In-App Interstitial (high frequency)
-    function autoInterstitial() {
-      if(typeof show_9911742 !== 'undefined'){
-        show_9911742({
-          type: 'inApp',
-          inAppSettings: {
-            frequency: 2,  // 2 ads automatically
-            capping: 0.1,  // within 6 minutes
-            interval: 30,  // 30s gap
-            timeout: 5,    // 5s delay
-            everyPage: false
-          }
-        });
-      }
+    function showRewardedInterstitial() {
+      show_9911742({ type: 'rewardedInterstitial' });
     }
 
-    // Call autoInterstitial every 1 min (adjust if needed)
-    setInterval(autoInterstitial, 60000);
+    // In-App Interstitial Auto Show
+    show_9911742({
+      type: 'inApp',
+      inAppSettings: {
+        frequency: 2,
+        capping: 0.1,
+        interval: 30,
+        timeout: 5,
+        everyPage: false
+      }
+    });
 
-    // Initial autoInterstitial on page load
-    window.addEventListener('load', autoInterstitial);
+    // Manual trigger
+    function showInAppInterstitial() {
+      show_9911742({ type: 'inApp' });
+    }
   </script>
+
 </body>
 </html>
