@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monetag Ad Demo</title>
+  <!-- SDK -->
+  <script src="//libtl.com/sdk.js" data-zone="9911742" data-sdk="show_9911742"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #4e54c8, #8f94fb);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+    .box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(8px);
+      margin-bottom: 20px;
+    }
+    button {
+      margin: 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      background: #ff7eb3;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff4f9a;
+      transform: scale(1.05);
+    }
+    .status {
+      font-size: 14px;
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>🔥 Monetag Ad Demo</h1>
+    <p>Choose an ad format:</p>
+    <button onclick="showRewardedPopup()">Rewarded Popup</button>
+    <button onclick="showRewardedInterstitial()">Rewarded Interstitial</button>
+    <button onclick="showInApp()">In-App Interstitial</button>
+  </div>
+
+  <div class="box">
+    <h2>Status</h2>
+    <div id="sdkStatus">🔄 Checking SDK...</div>
+    <div class="status">
+      Rewarded Popup shown: <span id="popupCount">0</span><br>
+      Rewarded Interstitial shown: <span id="interstitialCount">0</span><br>
+      In-App Interstitial shown: <span id="inAppCount">0</span>
+    </div>
+  </div>
+
+  <script>
+    let popupCount = 0;
+    let interstitialCount = 0;
+    let inAppCount = 0;
+
+    // Check SDK status
+    function updateSdkStatus() {
+      const sdkStatus = document.getElementById("sdkStatus");
+      if (typeof show_9911742 === "function") {
+        sdkStatus.textContent = "✅ SDK Loaded";
+      } else {
+        sdkStatus.textContent = "❌ SDK Not Ready";
+      }
+    }
+    setInterval(updateSdkStatus, 1000); // প্রতি ১ সেকেন্ডে চেক করবে
+
+    // Rewarded Popup
+    function showRewardedPopup() {
+      if (typeof show_9911742 === "function") {
+        show_9911742('pop')
+          .then(() => {
+            popupCount++;
+            document.getElementById("popupCount").textContent = popupCount;
+          })
+          .catch(() => alert("⚠️ Popup Ad failed"));
+      }
+    }
+
+    // Rewarded Interstitial
+    function showRewardedInterstitial() {
+      if (typeof show_9911742 === "function") {
+        show_9911742()
+          .then(() => {
+            interstitialCount++;
+            document.getElementById("interstitialCount").textContent = interstitialCount;
+          })
+          .catch(() => alert("⚠️ Interstitial Ad failed"));
+      }
+    }
+
+    // In-App Interstitial
+    function showInApp() {
+      if (typeof show_9911742 === "function") {
+        show_9911742({
+          type: 'inApp',
+          inAppSettings: {
+            frequency: 2,
+            capping: 0.1,
+            interval: 30,
+            timeout: 5,
+            everyPage: false
+          }
+        });
+        inAppCount++;
+        document.getElementById("inAppCount").textContent = inAppCount;
+      }
+    }
+
+    // Auto In-App Interstitial (মাঝে মাঝে দেখাবে)
+    setInterval(() => {
+      if (typeof show_9911742 === "function") {
+        show_9911742({
+          type: 'inApp',
+          inAppSettings: {
+            frequency: 1,
+            capping: 0.1,
+            interval: 60,
+            timeout: 5,
+            everyPage: false
+          }
+        });
+        inAppCount++;
+        document.getElementById("inAppCount").textContent = inAppCount;
+      }
+    }, 120000); // প্রতি ২ মিনিট পরপর চেষ্টা করবে
+  </script>
+</body>
+</html>
